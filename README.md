@@ -19,14 +19,23 @@ The cw.js should be included, then the function is usable as follows:
                 textBoxShow             : true,
                 fontColor               : "#ffffff",
                 boxColor                : "#ffffff"
-        } 
+        }
         
+        //The callback function gets an Image and a base64 injected into
+        var callback = function(img,base64){
+            //Change the source of the original elemenet
+            var imgOri=document.getElementById('editedPicture');
+                imgOri.src=img.src;
+        }
+         
         //Wait until the window loads then call the function
         window.onload = function () {
             //Call the function
             //First parameter is the id of the picture element,
             //Second parameter is the desired text on the picture. (Multi line is not supported)
-            $scope.addWatermark('myPicture', "Hello World");
+            //The third parameter is a callback function. The function passed here will be called when the picture edit is done. 
+            //The callback function gets an Image and a base64 injected into
+            $scope.addWatermark('myPicture', "Hello World",callback);
         }        
     -->
     </script>
