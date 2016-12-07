@@ -20,10 +20,8 @@
     
     //Function used to add watermark
     $scope.addWatermark = function(picture,textToWrite,callback){
-        //Variable to prevent infinite loop
-        var done=false;
-        
-        //Create the image from the base64 data
+         
+        //Check if the element exists and it is an image
         var imgOri=document.getElementById(picture);
         if(!(imgOri instanceof HTMLImageElement)){
             return;
