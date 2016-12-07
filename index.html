@@ -1,0 +1,122 @@
+<script type="text/javascript">
+<!--
+    //Declare the secope. It is declared in angularjs
+    $scope={};
+    $scope.settings={
+            fontStyle               : "normal",
+            fontVariant             : "normal",
+            fontWeight              : "normal",
+            fontSize                : 150,
+            textPositionHorizontal  : "Center", //Left,Center,Right
+            textPositionVertical    : "Middle", //Bottom, Top, Middle
+            textBoxShow             : true,
+            fontColor               : "#ffffff",
+            boxColor                : "#ffffff"
+    }
+    
+    
+	//Function used to add watermark
+    $scope.addWatermark = function(src,txt){
+        //Create the image from the base64 data
+        var img = new Image();
+        img.src=src;
+        //Create a new canvas
+        var canvas=document.createElement('canvas');
+        //Get the context of the canvas
+        var ctx=canvas.getContext("2d");
+        
+        //When the picture is loaded we begin the operations with it
+        img.onload = function(){
+            //Set the canvas size to the equivalent of the picture
+            canvas.width=img.width;
+            canvas.height=img.height;
+            ctx.font="20px Georgia";
+            //Draw the image onto the canvas
+            ctx.drawImage(img,0,0);
+            
+            var textToWrite=txt;
+            
+            //If there is something to write onto the picture
+            if(textToWrite!=''){
+                //Set base position         
+                var horizontal=10;
+                var vertical=30;
+                var textAlign='left';  
+                var textBaseline='top';  
+                
+                //Get font style
+                var style=$scope.settings.fontStyle.toLowerCase();
+                var variant=$scope.settings.fontVariant.toLowerCase();
+                var weight=$scope.settings.fontWeight.toLowerCase();
+                var size=$scope.settings.fontSize+'px';
+                //Set font style
+                ctx.font=style+" "+variant+" "+weight+" "+size+" arial";  
+                
+                
+                //Background box position
+                var boxVertical=30;
+                
+                //Decide horizontal position
+                switch($scope.settings.textPositionHorizontal){
+                    case 'Left':
+                        break;
+                    case 'Center':
+                        textAlign='center';
+                        horizontal=canvas.width/2;
+                        break;
+                    case 'Right':
+                        textAlign='right';
+                        horizontal=canvas.width-10;
+                        break;
+                }    
+                //Decide vertical position
+                switch($scope.settings.textPositionVertical){
+                    case 'Top':
+                        break;
+                    case 'Middle':
+                        textBaseline='middle';
+                        vertical=canvas.height/2;
+                        boxVertical=vertical -($scope.settings.fontSize/2);
+                        break;
+                    case 'Bottom':
+                        textBaseline='bottom';
+                        vertical=canvas.height-10;
+                        boxVertical=vertical-$scope.settings.fontSize-5;
+                        break;
+                } 
+                //Set text vertical align
+                ctx.textBaseline=textBaseline;
+                //Set text horizontal aligning
+                ctx.textAlign=textAlign; 
+                
+                
+                //Check the box should be shown
+                if($scope.settings.textBoxShow){
+                    //Set the font color
+                    ctx.fillStyle=$scope.settings.boxColor;
+                    //Set the opacity of the box
+                    ctx.globalAlpha=0.4;
+                    //Create background box
+                    ctx.fillRect(0,boxVertical,canvas.width,$scope.settings.fontSize+15);
+                    //Set alpha back to full
+                    ctx.globalAlpha=1;
+                }
+                //Set the font color
+                ctx.fillStyle=$scope.settings.fontColor;             
+                //Write onto the image 
+                ctx.fillText(textToWrite,horizontal,vertical);
+            }
+            
+            //Show the image
+            var image = document.getElementById('takenPicture');
+                image.src = canvas.toDataURL("image/jpeg");
+                            
+            
+        }
+    }
+     
+    //Call the function
+    $scope.addWatermark("pic.jpg", "Hello World");        
+-->
+</script>
+<img id="takenPicture" src="" width="1000"/>
