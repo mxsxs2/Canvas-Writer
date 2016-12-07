@@ -10,7 +10,7 @@
     <script type="text/javascript">
     <!--
         
-        //Declare the settings.
+        //Declare the settings. These settings are declared in cw.js as well, therefore they are not required if not changed.
         $scope.settings={
                 fontStyle               : "normal",
                 fontVariant             : "normal",
@@ -21,22 +21,32 @@
                 textBoxShow             : true,
                 fontColor               : "#ffffff",
                 boxColor                : "#ffffff"
-        } 
+        }
+        //The callback function gets an Image and a base64 injected into
+        var callback = function(img,base64){
+            //Change the source of the original elemenet
+            var imgOri=document.getElementById('editedPicture');
+                imgOri.src=img.src;
+        }
+         
         //Wait until the window loads then call the function
         window.onload = function () {
             //Call the function
             //First parameter is the id of the picture element,
             //Second parameter is the desired text on the picture. (Multi line is not supported)
-            $scope.addWatermark('myPicture', "Hello World");
+            //The third parameter is a callback function. The function passed here will be called when the picture edit is done. 
+            //The callback function gets an Image and a base64 injected into
+            $scope.addWatermark('myPicture', "Hello World",callback);
         }        
     -->
     </script>
 </head>
 
 <body>
-
-<img id="myPicture" src="pic.jpg" width="1000"/>
-
+<!--Original Picture-->
+<img id="myPicture" src="pic.jpg" width="500"/>
+<!--Edited Picture-->
+<img id="editedPicture" src="" width="500"/>
 </body>
 </html>
 

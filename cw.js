@@ -19,7 +19,9 @@
     } 
     
     //Function used to add watermark
-    $scope.addWatermark = function(picture,textToWrite){
+    $scope.addWatermark = function(picture,textToWrite,callback){
+        //Variable to prevent infinite loop
+        var done=false;
         
         //Create the image from the base64 data
         var imgOri=document.getElementById(picture);
@@ -112,7 +114,11 @@
                 //Write onto the image 
                 ctx.fillText(textToWrite,horizontal,vertical);
             }
-            //Change the source of the original elemenet
-            imgOri.src=canvas.toDataURL("image/jpeg");   
+            //Create a new picture and add the source
+            //This will return in the callback
+            var finalImg= new Image();
+                finalImg.src=canvas.toDataURL("image/jpeg");    
+            //Call the callback function
+            if (typeof callback === "function") callback(finalImg,finalImg.src); 
         }
     }
